@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  # Service Java pour l'API
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./api:/usr/src/app
+    networks:
+      - basket-network
+
+  front:
+    build:
+      context: .
+      dockerfile: front/Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - basket-network
+
+  nginx:
+    image: nginx:1.19.3-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./front:/var/www/psb13/frontend
+      - ./api:/var/www/psb13/api
+    links:
+      - api
+      - front
+    networks:
+      - basket-network
+
+  # Base de données MariaDB
+  mariadb:
+    image: mariadb:10.5.8
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: psb13
+      MYSQL_USER: psb13
+      MYSQL_PASSWORD: psb13
+    networks:
+      - basket-network
+
+  # Service phpMyAdmin pour la gestion de la base de données
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mariadb
+    networks:
+      - basket-network
+
+networks:
+  basket-network:
+
+volumes:
+  mariadb-data:
