@@ -1,5 +1,5 @@
 -- Table Equipe
-CREATE TABLE Equipe (
+CREATE TABLE equipe (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         nom VARCHAR(255) NOT NULL,
                         ville VARCHAR(100) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE Equipe (
 );
 
 -- Table Joueur
-CREATE TABLE Joueur (
+CREATE TABLE joueur (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         nom VARCHAR(100) NOT NULL,
                         prenom VARCHAR(100) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE Joueur (
 );
 
 -- Table Match
-CREATE TABLE Matches (
+CREATE TABLE matches (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
                        date DATETIME NOT NULL,
                        location VARCHAR(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE Matches (
 );
 
 -- Table Billet
-CREATE TABLE Billet (
+CREATE TABLE billet (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         type VARCHAR(50) NOT NULL,
                         categorie VARCHAR(50) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE Billet (
 );
 
 -- Insertion de données dans la table Equipe
-INSERT INTO Equipe (nom, ville, logo) VALUES
+INSERT INTO equipe (nom, ville, logo) VALUES
                                           ('Paris Saint-Germain', 'Paris', 'psg_logo.png'),
                                           ('Real Madrid', 'Madrid', 'real_madrid_logo.png'),
                                           ('FC Barcelona', 'Barcelone', 'barcelona_logo.png'),
@@ -45,7 +45,7 @@ INSERT INTO Equipe (nom, ville, logo) VALUES
                                           ('Bayern Munich', 'Munich', 'bayern_logo.png');
 
 -- Insertion de données dans la table Joueur
-INSERT INTO Joueur (nom, prenom, equipe_id) VALUES
+INSERT INTO joueur (nom, prenom, equipe_id) VALUES
                                                 ('Mbappé', 'Kylian', 1),
                                                 ('Ramos', 'Sergio', 2),
                                                 ('Messi', 'Lionel', 3),
@@ -58,7 +58,7 @@ INSERT INTO Joueur (nom, prenom, equipe_id) VALUES
                                                 ('Müller', 'Thomas', 5);
 
 -- Insertion de données dans la table Match
-INSERT INTO Matches (date, location, teamA_id, teamB_id, scoreA, scoreB) VALUES
+INSERT INTO matches (date, location, teamA_id, teamB_id, scoreA, scoreB) VALUES
                                                                            ('2024-06-14 18:00:00', 'Parc des Princes', 1, 2, 2, 1),
                                                                            ('2024-06-15 19:00:00', 'Camp Nou', 3, 4, 3, 3),
                                                                            ('2024-06-16 20:00:00', 'Allianz Arena', 5, 2, 1, 2),
@@ -66,7 +66,7 @@ INSERT INTO Matches (date, location, teamA_id, teamB_id, scoreA, scoreB) VALUES
                                                                            ('2024-06-18 20:00:00', 'Santiago Bernabéu', 2, 3, 2, 2);
 
 -- Insertion de données dans la table Billet
-INSERT INTO Billet (type, categorie, prix) VALUES
+INSERT INTO billet (type, categorie, prix) VALUES
                                                ('VIP', 'Catégorie A', 300.00),
                                                ('Standard', 'Catégorie B', 150.00),
                                                ('Économique', 'Catégorie C', 75.00),
