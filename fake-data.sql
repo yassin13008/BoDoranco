@@ -1,63 +1,79 @@
--- Création de la table équipe
-CREATE TABLE equipe (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    ville VARCHAR(100) NOT NULL,
-    logo VARCHAR(100)
+-- Table Equipe
+CREATE TABLE Equipe (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        nom VARCHAR(255) NOT NULL,
+                        ville VARCHAR(100) NOT NULL,
+                        logo VARCHAR(255)
 );
 
--- Création de la table joueur
-CREATE TABLE joueur (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    numero_maillot INT NOT NULL,
-    equipe_id INT,
-    FOREIGN KEY (equipe_id) REFERENCES equipe(id)
+-- Table Joueur
+CREATE TABLE Joueur (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        nom VARCHAR(100) NOT NULL,
+                        prenom VARCHAR(100) NOT NULL,
+                        equipe_id BIGINT,
+                        CONSTRAINT FK_Equipe FOREIGN KEY (equipe_id) REFERENCES Equipe(id)
 );
 
--- Création de la table billet
-CREATE TABLE billet (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(100) NOT NULL,
-    categorie VARCHAR(100) NOT NULL,
-    prix DECIMAL(10, 2) NOT NULL
+-- Table Match
+CREATE TABLE Matches (
+                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                       date DATETIME NOT NULL,
+                       location VARCHAR(255) NOT NULL,
+                       teamA_id BIGINT,
+                       teamB_id BIGINT,
+                       scoreA INT NOT NULL,
+                       scoreB INT NOT NULL,
+                       CONSTRAINT FK_TeamA FOREIGN KEY (teamA_id) REFERENCES Equipe(id),
+                       CONSTRAINT FK_TeamB FOREIGN KEY (teamB_id) REFERENCES Equipe(id)
 );
 
--- Création de la table match
-CREATE TABLE matches (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    date DATETIME NOT NULL,
-    equipe_domicile_id INT,
-    equipe_visiteur_id INT,
-    lieu VARCHAR(100),
-    FOREIGN KEY (equipe_domicile_id) REFERENCES equipe(id),
-    FOREIGN KEY (equipe_visiteur_id) REFERENCES equipe(id)
+-- Table Billet
+CREATE TABLE Billet (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        type VARCHAR(50) NOT NULL,
+                        categorie VARCHAR(50) NOT NULL,
+                        prix DECIMAL(10, 2) NOT NULL
 );
 
--- Insertion de fausses données pour les équipes
-INSERT INTO equipe (nom, ville, logo) VALUES
-('Los Angeles Lakers', 'Los Angeles', 'lakers_logo.png'),
-('Golden State Warriors', 'San Francisco', 'warriors_logo.png'),
-('Boston Celtics', 'Boston', 'celtics_logo.png'),
-('Chicago Bulls', 'Chicago', 'bulls_logo.png'),
-('Miami Heat', 'Miami', 'heat_logo.png');
+-- Insertion de données dans la table Equipe
+INSERT INTO Equipe (nom, ville, logo) VALUES
+                                          ('Paris Saint-Germain', 'Paris', 'psg_logo.png'),
+                                          ('Real Madrid', 'Madrid', 'real_madrid_logo.png'),
+                                          ('FC Barcelona', 'Barcelone', 'barcelona_logo.png'),
+                                          ('Manchester United', 'Manchester', 'man_utd_logo.png'),
+                                          ('Bayern Munich', 'Munich', 'bayern_logo.png');
 
--- Insertion de fausses données pour les joueurs
-INSERT INTO joueur (nom, numero_maillot, equipe_id) VALUES
-('LeBron James', 23, 1), -- Joueur des Lakers
-('Stephen Curry', 30, 2), -- Joueur des Warriors
-('Jayson Tatum', 0, 3),   -- Joueur des Celtics
-('Zach LaVine', 8, 4),     -- Joueur des Bulls
-('Jimmy Butler', 22, 5);   -- Joueur des Heat
+-- Insertion de données dans la table Joueur
+INSERT INTO Joueur (nom, prenom, equipe_id) VALUES
+                                                ('Mbappé', 'Kylian', 1),
+                                                ('Ramos', 'Sergio', 2),
+                                                ('Messi', 'Lionel', 3),
+                                                ('Rashford', 'Marcus', 4),
+                                                ('Lewandowski', 'Robert', 5),
+                                                ('Neymar', 'Junior', 1),
+                                                ('Alaba', 'David', 2),
+                                                ('De Jong', 'Frenkie', 3),
+                                                ('Fernandes', 'Bruno', 4),
+                                                ('Müller', 'Thomas', 5);
 
--- Insertion de fausses données pour les billets
-INSERT INTO billet (type, categorie, prix) VALUES
-('Standard', 'Tribune', 25.00),
-('VIP', 'Loge', 100.00),
-('Premium', 'VIP', 150.00);
+-- Insertion de données dans la table Match
+INSERT INTO Matches (date, location, teamA_id, teamB_id, scoreA, scoreB) VALUES
+                                                                           ('2024-06-14 18:00:00', 'Parc des Princes', 1, 2, 2, 1),
+                                                                           ('2024-06-15 19:00:00', 'Camp Nou', 3, 4, 3, 3),
+                                                                           ('2024-06-16 20:00:00', 'Allianz Arena', 5, 2, 1, 2),
+                                                                           ('2024-06-17 18:00:00', 'Old Trafford', 4, 1, 1, 0),
+                                                                           ('2024-06-18 20:00:00', 'Santiago Bernabéu', 2, 3, 2, 2);
 
--- Insertion de fausses données pour les matchs
-INSERT INTO matches (date, equipe_domicile_id, equipe_visiteur_id, lieu) VALUES
-('2024-05-01 18:00:00', 1, 2, 'Staples Center'), -- Lakers vs Warriors
-('2024-05-03 19:30:00', 3, 4, 'TD Garden'),      -- Celtics vs Bulls
-('2024-05-05 20:00:00', 5, 1, 'American Airlines Arena'); -- Heat vs Lakers
+-- Insertion de données dans la table Billet
+INSERT INTO Billet (type, categorie, prix) VALUES
+                                               ('VIP', 'Catégorie A', 300.00),
+                                               ('Standard', 'Catégorie B', 150.00),
+                                               ('Économique', 'Catégorie C', 75.00),
+                                               ('VIP', 'Catégorie A', 320.00),
+                                               ('Standard', 'Catégorie B', 160.00),
+                                               ('Économique', 'Catégorie C', 80.00),
+                                               ('VIP', 'Catégorie A', 350.00),
+                                               ('Standard', 'Catégorie B', 170.00),
+                                               ('Économique', 'Catégorie C', 85.00),
+                                               ('VIP', 'Catégorie A', 280.00);

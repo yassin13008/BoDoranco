@@ -1,18 +1,37 @@
 package com.example.api.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Joueur {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nom;
-    private int numeroMaillot;
+    private String prenom;
+
+    @ManyToOne
+    @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 
-    // Constructeur
-    public Joueur(String nom, int numeroMaillot, Equipe equipe) {
+    // Constructors, getters, and setters
+    public Joueur() {}
+
+    public Joueur(String nom, String prenom, Equipe equipe) {
         this.nom = nom;
-        this.numeroMaillot = numeroMaillot;
+        this.prenom = prenom;
         this.equipe = equipe;
     }
 
-    // Getters et Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -21,12 +40,12 @@ public class Joueur {
         this.nom = nom;
     }
 
-    public int getNumeroMaillot() {
-        return numeroMaillot;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setNumeroMaillot(int numeroMaillot) {
-        this.numeroMaillot = numeroMaillot;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
     public Equipe getEquipe() {

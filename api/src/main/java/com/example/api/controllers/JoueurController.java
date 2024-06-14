@@ -1,7 +1,7 @@
 package com.example.api.controllers;
 
-import com.example.api.dao.JoueurDAO;
 import com.example.api.model.Joueur;
+import com.example.api.repository.JoueurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,54 +13,54 @@ import java.util.List;
 @RequestMapping("/joueurs")
 public class JoueurController {
 
-    private final JoueurDAO joueurDAO;
+    private final JoueurRepository joueurRepository;
 
     @Autowired
-    public JoueurController(JoueurDAO joueurDAO) {
-        this.joueurDAO = joueurDAO;
+    public JoueurController(JoueurRepository joueurRepository) {
+        this.joueurRepository = joueurRepository;
     }
 
-    // Endpoint pour récupérer tous les joueurs
+    // Endpoint to get all players
     @GetMapping
     public ResponseEntity<List<Joueur>> getAllJoueurs() {
-        List<Joueur> joueurs = joueurDAO.getAllJoueurs();
+        List<Joueur> joueurs = joueurRepository.findAll();
         return new ResponseEntity<>(joueurs, HttpStatus.OK);
     }
 
-    // Endpoint pour récupérer un joueur par son ID
+    // Endpoint to get a player by ID
     @GetMapping("/{id}")
     public ResponseEntity<Joueur> getJoueurById(@PathVariable("id") Long id) {
-        Joueur joueur = joueurDAO.getJoueurById(id);
-        if (joueur != null) {
-            return new ResponseEntity<>(joueur, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return joueurRepository.findById(id)
+                .map(joueur -> new ResponseEntity<>(joueur, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint pour créer un nouveau joueur
+    // Endpoint to create a new player
     @PostMapping
     public ResponseEntity<Joueur> createJoueur(@RequestBody Joueur joueur) {
-        Joueur newJoueur = joueurDAO.createJoueur(joueur);
+        Joueur newJoueur = joueurRepository.save(joueur);
         return new ResponseEntity<>(newJoueur, HttpStatus.CREATED);
     }
 
-    // Endpoint pour mettre à jour un joueur existant
+    // Endpoint to update an existing player
     @PutMapping("/{id}")
     public ResponseEntity<Joueur> updateJoueur(@PathVariable("id") Long id, @RequestBody Joueur joueur) {
-        Joueur updatedJoueur = joueurDAO.updateJoueur(id, joueur);
-        if (updatedJoueur != null) {
-            return new ResponseEntity<>(updatedJoueur, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return joueurRepository.findById(id)
+                .map(existingJoueur -> {
+                    existingJoueur.setNom(joueur.getNom());
+                    existingJoueur.setPrenom(joueur.getPrenom());
+                    existingJoueur.setEquipe(joueur.getEquipe());
+                    joueurRepository.save(existingJoueur);
+                    return new ResponseEntity<>(existingJoueur, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint pour supprimer un joueur existant
+    // Endpoint to delete an existing player
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJoueur(@PathVariable("id") Long id) {
-        boolean deleted = joueurDAO.deleteJoueur(id);
-        if (deleted) {
+        if (joueurRepository.existsById(id)) {
+            joueurRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

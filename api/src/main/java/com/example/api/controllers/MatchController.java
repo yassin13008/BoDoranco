@@ -1,7 +1,7 @@
 package com.example.api.controllers;
 
-import com.example.api.dao.MatchDAO;
 import com.example.api.model.Match;
+import com.example.api.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,57 +10,60 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/matchs")
+@RequestMapping("/matches")
 public class MatchController {
 
-    private final MatchDAO matchDAO;
+    private final MatchRepository matchRepository;
 
     @Autowired
-    public MatchController(MatchDAO matchDAO) {
-        this.matchDAO = matchDAO;
+    public MatchController(MatchRepository matchRepository) {
+        this.matchRepository = matchRepository;
     }
 
-    // Endpoint pour récupérer tous les matchs
+    // Endpoint to get all matches
     @GetMapping
-    public ResponseEntity<List<Match>> getAllMatchs() {
-        List<Match> matchs = matchDAO.getAllMatchs();
-        return new ResponseEntity<>(matchs, HttpStatus.OK);
+    public ResponseEntity<List<Match>> getAllMatches() {
+        List<Match> matches = matchRepository.findAll();
+        return new ResponseEntity<>(matches, HttpStatus.OK);
     }
 
-    // Endpoint pour récupérer un match par son ID
+    // Endpoint to get a match by ID
     @GetMapping("/{id}")
     public ResponseEntity<Match> getMatchById(@PathVariable("id") Long id) {
-        Match match = matchDAO.getMatchById(id);
-        if (match != null) {
-            return new ResponseEntity<>(match, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return matchRepository.findById(id)
+                .map(match -> new ResponseEntity<>(match, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint pour créer un nouveau match
+    // Endpoint to create a new match
     @PostMapping
     public ResponseEntity<Match> createMatch(@RequestBody Match match) {
-        Match newMatch = matchDAO.createMatch(match);
+        Match newMatch = matchRepository.save(match);
         return new ResponseEntity<>(newMatch, HttpStatus.CREATED);
     }
 
-    // Endpoint pour mettre à jour un match existant
+    // Endpoint to update an existing match
     @PutMapping("/{id}")
     public ResponseEntity<Match> updateMatch(@PathVariable("id") Long id, @RequestBody Match match) {
-        Match updatedMatch = matchDAO.updateMatch(id, match);
-        if (updatedMatch != null) {
-            return new ResponseEntity<>(updatedMatch, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return matchRepository.findById(id)
+                .map(existingMatch -> {
+                    existingMatch.setDate(match.getDate());
+                    existingMatch.setLocation(match.getLocation());
+                    existingMatch.setTeamA(match.getTeamA());
+                    existingMatch.setTeamB(match.getTeamB());
+                    existingMatch.setScoreA(match.getScoreA());
+                    existingMatch.setScoreB(match.getScoreB());
+                    matchRepository.save(existingMatch);
+                    return new ResponseEntity<>(existingMatch, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint pour supprimer un match existant
+    // Endpoint to delete an existing match
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMatch(@PathVariable("id") Long id) {
-        boolean deleted = matchDAO.deleteMatch(id);
-        if (deleted) {
+        if (matchRepository.existsById(id)) {
+            matchRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

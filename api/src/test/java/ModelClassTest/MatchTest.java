@@ -1,5 +1,6 @@
 package ModelClassTest;
 
+import com.example.api.model.Equipe;
 import com.example.api.model.Match;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,86 +8,143 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTest {
 
     private Match match;
     private Date date;
+    private Equipe teamA;
+    private Equipe teamB;
 
     @BeforeEach
     public void setUp() {
-        // Initialisation de la date
+        // Initialize the date
         date = new Date();
-        // Initialisation du match
-        match = new Match(date, "Lakers", "Warriors", "Staples Center");
+
+        // Initialize teams
+        teamA = new Equipe();
+        teamA.setId(1L);
+        teamA.setNom("Lakers");
+
+        teamB = new Equipe();
+        teamB.setId(2L);
+        teamB.setNom("Warriors");
+
+        // Initialize the match
+        match = new Match(date, "Staples Center", teamA, teamB, 100, 99);
     }
 
     @Test
     public void testMatchConstructor() {
-        // Vérification des valeurs initiales
+        // Verify initial values
         assertEquals(date, match.getDate());
-        assertEquals("Lakers", match.getEquipeDomicile());
-        assertEquals("Warriors", match.getEquipeVisiteur());
-        assertEquals("Staples Center", match.getLieu());
+        assertEquals("Staples Center", match.getLocation());
+        assertEquals(teamA, match.getTeamA());
+        assertEquals(teamB, match.getTeamB());
+        assertEquals(100, match.getScoreA());
+        assertEquals(99, match.getScoreB());
     }
 
     @Test
     public void testGetDate() {
-        // Vérification du getter de la date
+        // Verify date getter
         assertEquals(date, match.getDate());
     }
 
     @Test
     public void testSetDate() {
-        // Modification et vérification de la date
-        Date newDate = new Date(date.getTime() + 86400000); // Ajout de 1 jour
+        // Modify and verify the date
+        Date newDate = new Date(date.getTime() + 86400000); // Add 1 day
         match.setDate(newDate);
         assertEquals(newDate, match.getDate());
     }
 
     @Test
-    public void testGetEquipeDomicile() {
-        // Vérification du getter de l'équipe domicile
-        assertEquals("Lakers", match.getEquipeDomicile());
+    public void testGetLocation() {
+        // Verify location getter
+        assertEquals("Staples Center", match.getLocation());
     }
 
     @Test
-    public void testSetEquipeDomicile() {
-        // Modification et vérification de l'équipe domicile
-        match.setEquipeDomicile("Clippers");
-        assertEquals("Clippers", match.getEquipeDomicile());
+    public void testSetLocation() {
+        // Modify and verify the location
+        match.setLocation("Madison Square Garden");
+        assertEquals("Madison Square Garden", match.getLocation());
     }
 
     @Test
-    public void testGetEquipeVisiteur() {
-        // Vérification du getter de l'équipe visiteur
-        assertEquals("Warriors", match.getEquipeVisiteur());
+    public void testGetTeamA() {
+        // Verify team A getter
+        assertEquals(teamA, match.getTeamA());
     }
 
     @Test
-    public void testSetEquipeVisiteur() {
-        // Modification et vérification de l'équipe visiteur
-        match.setEquipeVisiteur("Nets");
-        assertEquals("Nets", match.getEquipeVisiteur());
+    public void testSetTeamA() {
+        // Modify and verify team A
+        Equipe newTeamA = new Equipe();
+        newTeamA.setId(3L);
+        newTeamA.setNom("Clippers");
+
+        match.setTeamA(newTeamA);
+        assertEquals(newTeamA, match.getTeamA());
     }
 
     @Test
-    public void testGetLieu() {
-        // Vérification du getter du lieu
-        assertEquals("Staples Center", match.getLieu());
+    public void testGetTeamB() {
+        // Verify team B getter
+        assertEquals(teamB, match.getTeamB());
     }
 
     @Test
-    public void testSetLieu() {
-        // Modification et vérification du lieu
-        match.setLieu("Madison Square Garden");
-        assertEquals("Madison Square Garden", match.getLieu());
+    public void testSetTeamB() {
+        // Modify and verify team B
+        Equipe newTeamB = new Equipe();
+        newTeamB.setId(4L);
+        newTeamB.setNom("Nets");
+
+        match.setTeamB(newTeamB);
+        assertEquals(newTeamB, match.getTeamB());
+    }
+
+    @Test
+    public void testGetScoreA() {
+        // Verify score A getter
+        assertEquals(100, match.getScoreA());
+    }
+
+    @Test
+    public void testSetScoreA() {
+        // Modify and verify score A
+        match.setScoreA(101);
+        assertEquals(101, match.getScoreA());
+    }
+
+    @Test
+    public void testGetScoreB() {
+        // Verify score B getter
+        assertEquals(99, match.getScoreB());
+    }
+
+    @Test
+    public void testSetScoreB() {
+        // Modify and verify score B
+        match.setScoreB(102);
+        assertEquals(102, match.getScoreB());
+    }
+
+    @Test
+    public void testGetId() {
+        // Verify ID getter
+        Long id = 1L;
+        match.setId(id);
+        assertEquals(id, match.getId());
     }
 
     @Test
     public void testSetId() {
-        // Vérification que l'appel à setId lance une exception
-        assertThrows(UnsupportedOperationException.class, () -> match.setId(1L));
+        // Modify and verify ID
+        Long newId = 2L;
+        match.setId(newId);
+        assertEquals(newId, match.getId());
     }
 }

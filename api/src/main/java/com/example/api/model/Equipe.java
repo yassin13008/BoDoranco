@@ -1,9 +1,21 @@
 package com.example.api.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Equipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nom;
     private String ville;
     private String logo; // Logo de l'équipe
+
+    public Equipe() {
+    }
 
     // Constructeur
     public Equipe(String nom, String ville, String logo) {
@@ -12,7 +24,17 @@ public class Equipe {
         this.logo = logo;
     }
 
+
     // Getters et Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNom() {
         return nom;
     }

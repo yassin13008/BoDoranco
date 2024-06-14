@@ -1,22 +1,49 @@
 package com.example.api.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "matches")
 public class Match {
-    private Date date;
-    private String equipeDomicile;
-    private String equipeVisiteur;
-    private String lieu;
 
-    // Constructeur
-    public Match(Date date, String equipeDomicile, String equipeVisiteur, String lieu) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Date date;
+    private String location;
+
+    @ManyToOne
+    @JoinColumn(name = "teamA_id")
+    private Equipe teamA;
+
+    @ManyToOne
+    @JoinColumn(name = "teamB_id")
+    private Equipe teamB;
+
+    private int scoreA;
+    private int scoreB;
+
+    // Constructors, getters, and setters
+    public Match() {}
+
+    public Match(Date date, String location, Equipe teamA, Equipe teamB, int scoreA, int scoreB) {
         this.date = date;
-        this.equipeDomicile = equipeDomicile;
-        this.equipeVisiteur = equipeVisiteur;
-        this.lieu = lieu;
+        this.location = location;
+        this.teamA = teamA;
+        this.teamB = teamB;
+        this.scoreA = scoreA;
+        this.scoreB = scoreB;
     }
 
-    // Getters et Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -25,33 +52,43 @@ public class Match {
         this.date = date;
     }
 
-    public String getEquipeDomicile() {
-        return equipeDomicile;
+    public String getLocation() {
+        return location;
     }
 
-    public void setEquipeDomicile(String equipeDomicile) {
-        this.equipeDomicile = equipeDomicile;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getEquipeVisiteur() {
-        return equipeVisiteur;
+    public Equipe getTeamA() {
+        return teamA;
     }
 
-    public void setEquipeVisiteur(String equipeVisiteur) {
-        this.equipeVisiteur = equipeVisiteur;
+    public void setTeamA(Equipe teamA) {
+        this.teamA = teamA;
     }
 
-    public String getLieu() {
-        return lieu;
+    public Equipe getTeamB() {
+        return teamB;
     }
 
-    public void setLieu(String lieu) {
-        this.lieu = lieu;
+    public void setTeamB(Equipe teamB) {
+        this.teamB = teamB;
     }
 
-    public void setId(long long1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+    public int getScoreA() {
+        return scoreA;
+    }
+
+    public void setScoreA(int scoreA) {
+        this.scoreA = scoreA;
+    }
+
+    public int getScoreB() {
+        return scoreB;
+    }
+
+    public void setScoreB(int scoreB) {
+        this.scoreB = scoreB;
     }
 }
-

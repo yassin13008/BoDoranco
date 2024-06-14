@@ -14,57 +14,79 @@ public class JoueurTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialisation de l'équipe
-        equipe = new Equipe("Lakers", "Los Angeles", "logo.png");
-        // Initialisation du joueur
-        joueur = new Joueur("LeBron James", 23, equipe);
+        // Initialize the equipe object before each test
+        equipe = new Equipe();
+        equipe.setId(1L);
+        equipe.setNom("Bulls");
+
+        // Initialize the joueur object before each test
+        joueur = new Joueur("Jordan", "Michael", equipe);
     }
 
     @Test
     public void testJoueurConstructor() {
-        // Vérification des valeurs initiales
-        assertEquals("LeBron James", joueur.getNom());
-        assertEquals(23, joueur.getNumeroMaillot());
+        // Verify initial values from constructor
+        assertEquals("Jordan", joueur.getNom());
+        assertEquals("Michael", joueur.getPrenom());
         assertEquals(equipe, joueur.getEquipe());
     }
 
     @Test
     public void testGetNom() {
-        // Vérification du getter du nom
-        assertEquals("LeBron James", joueur.getNom());
+        // Verify getter for nom
+        assertEquals("Jordan", joueur.getNom());
     }
 
     @Test
     public void testSetNom() {
-        // Modification et vérification du nom
-        joueur.setNom("Anthony Davis");
-        assertEquals("Anthony Davis", joueur.getNom());
+        // Modify and verify nom
+        joueur.setNom("Bryant");
+        assertEquals("Bryant", joueur.getNom());
     }
 
     @Test
-    public void testGetNumeroMaillot() {
-        // Vérification du getter du numéro de maillot
-        assertEquals(23, joueur.getNumeroMaillot());
+    public void testGetPrenom() {
+        // Verify getter for prenom
+        assertEquals("Michael", joueur.getPrenom());
     }
 
     @Test
-    public void testSetNumeroMaillot() {
-        // Modification et vérification du numéro de maillot
-        joueur.setNumeroMaillot(3);
-        assertEquals(3, joueur.getNumeroMaillot());
+    public void testSetPrenom() {
+        // Modify and verify prenom
+        joueur.setPrenom("Kobe");
+        assertEquals("Kobe", joueur.getPrenom());
     }
 
     @Test
     public void testGetEquipe() {
-        // Vérification du getter de l'équipe
+        // Verify getter for equipe
         assertEquals(equipe, joueur.getEquipe());
     }
 
     @Test
     public void testSetEquipe() {
-        // Modification et vérification de l'équipe
-        Equipe nouvelleEquipe = new Equipe("Nets", "Brooklyn", "logo_nets.png");
-        joueur.setEquipe(nouvelleEquipe);
-        assertEquals(nouvelleEquipe, joueur.getEquipe());
+        // Modify and verify equipe
+        Equipe newEquipe = new Equipe();
+        newEquipe.setId(2L);
+        newEquipe.setNom("Lakers");
+
+        joueur.setEquipe(newEquipe);
+        assertEquals(newEquipe, joueur.getEquipe());
+    }
+
+    @Test
+    public void testGetId() {
+        // Verify getter for id
+        Long id = 1L;
+        joueur.setId(id);
+        assertEquals(id, joueur.getId());
+    }
+
+    @Test
+    public void testSetId() {
+        // Modify and verify id
+        Long newId = 2L;
+        joueur.setId(newId);
+        assertEquals(newId, joueur.getId());
     }
 }
