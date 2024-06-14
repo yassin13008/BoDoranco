@@ -35,38 +35,4 @@ public class MatchController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint to create a new match
-    @PostMapping
-    public ResponseEntity<Match> createMatch(@RequestBody Match match) {
-        Match newMatch = matchRepository.save(match);
-        return new ResponseEntity<>(newMatch, HttpStatus.CREATED);
-    }
-
-    // Endpoint to update an existing match
-    @PutMapping("/{id}")
-    public ResponseEntity<Match> updateMatch(@PathVariable("id") Long id, @RequestBody Match match) {
-        return matchRepository.findById(id)
-                .map(existingMatch -> {
-                    existingMatch.setDate(match.getDate());
-                    existingMatch.setLocation(match.getLocation());
-                    existingMatch.setTeamA(match.getTeamA());
-                    existingMatch.setTeamB(match.getTeamB());
-                    existingMatch.setScoreA(match.getScoreA());
-                    existingMatch.setScoreB(match.getScoreB());
-                    matchRepository.save(existingMatch);
-                    return new ResponseEntity<>(existingMatch, HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // Endpoint to delete an existing match
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMatch(@PathVariable("id") Long id) {
-        if (matchRepository.existsById(id)) {
-            matchRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 }

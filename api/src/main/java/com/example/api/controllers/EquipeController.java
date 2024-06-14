@@ -35,12 +35,6 @@ public class EquipeController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Endpoint pour créer une nouvelle équipe
-    @PostMapping
-    public ResponseEntity<Equipe> createEquipe(@RequestBody Equipe equipe) {
-        Equipe newEquipe = equipeRepository.save(equipe);
-        return new ResponseEntity<>(newEquipe, HttpStatus.CREATED);
-    }
 
     // Endpoint pour mettre à jour une équipe existante
     @PutMapping("/{id}")

@@ -20,20 +20,6 @@ public class JoueurController {
         this.joueurRepository = joueurRepository;
     }
 
-    // Endpoint to get all players
-    @GetMapping
-    public ResponseEntity<List<Joueur>> getAllJoueurs() {
-        List<Joueur> joueurs = joueurRepository.findAll();
-        return new ResponseEntity<>(joueurs, HttpStatus.OK);
-    }
-
-    // Endpoint to get a player by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Joueur> getJoueurById(@PathVariable("id") Long id) {
-        return joueurRepository.findById(id)
-                .map(joueur -> new ResponseEntity<>(joueur, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 
     // Endpoint to create a new player
     @PostMapping
@@ -50,7 +36,6 @@ public class JoueurController {
                     existingJoueur.setNom(joueur.getNom());
                     existingJoueur.setPrenom(joueur.getPrenom());
                     existingJoueur.setEquipe(joueur.getEquipe());
-                    joueurRepository.save(existingJoueur);
                     return new ResponseEntity<>(existingJoueur, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -60,7 +45,6 @@ public class JoueurController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJoueur(@PathVariable("id") Long id) {
         if (joueurRepository.existsById(id)) {
-            joueurRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
