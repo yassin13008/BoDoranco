@@ -1,6 +1,6 @@
 package com.example.api.controllers;
 
-import com.example.api.model.Match;
+import com.example.api.repository.model.Match;
 import com.example.api.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

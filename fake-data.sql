@@ -12,7 +12,7 @@ CREATE TABLE joueur (
                         nom VARCHAR(100) NOT NULL,
                         prenom VARCHAR(100) NOT NULL,
                         equipe_id BIGINT,
-                        CONSTRAINT FK_Equipe FOREIGN KEY (equipe_id) REFERENCES Equipe(id)
+                        CONSTRAINT FK_Equipe FOREIGN KEY (equipe_id) REFERENCES equipe(id)
 );
 
 -- Table Match
@@ -24,8 +24,8 @@ CREATE TABLE matches (
                        teamB_id BIGINT,
                        scoreA INT NOT NULL,
                        scoreB INT NOT NULL,
-                       CONSTRAINT FK_TeamA FOREIGN KEY (teamA_id) REFERENCES Equipe(id),
-                       CONSTRAINT FK_TeamB FOREIGN KEY (teamB_id) REFERENCES Equipe(id)
+                       CONSTRAINT FK_TeamA FOREIGN KEY (teamA_id) REFERENCES equipe(id),
+                       CONSTRAINT FK_TeamB FOREIGN KEY (teamB_id) REFERENCES equipe(id)
 );
 
 -- Table Billet

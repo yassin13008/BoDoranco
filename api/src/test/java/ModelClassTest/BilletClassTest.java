@@ -1,8 +1,14 @@
 package ModelClassTest;
 
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.example.api.repository.model.Billet;
+
+
 
 public class BilletClassTest {
 
@@ -17,10 +23,9 @@ public class BilletClassTest {
         Billet billet = new Billet(type, categorie, prix);
 
         // Assert
-        assertEquals(type, billet.getType());
-        assertEquals(categorie, billet.getCategorie());
-        assertEquals(prix, billet.getPrix());
+        Assertions.assertEquals(type, billet.getType());
+        Assertions.assertEquals(categorie, billet.getCategorie());
+        Assertions.assertEquals(prix, billet.getPrix());
     }
-
 
 }

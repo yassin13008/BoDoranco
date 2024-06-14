@@ -1,4 +1,6 @@
-package com.example.api.model;
+package com.example.api.repository.model;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,6 +12,8 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date date;
     private String location;
 
